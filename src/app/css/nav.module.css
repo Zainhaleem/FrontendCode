@@ -1,0 +1,12 @@
+.nav{
+    background: linear-gradient(180deg, #121212 10%, #212121 100%);
+    width: 100%;
+    padding: 20px 20px;
+}
+.logo{
+    width: 70%;
+    max-width: 400px;
+    aspect-ratio:400 / 104;
+    position: relative;
+    margin: 0 auto;
+}

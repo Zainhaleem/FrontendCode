@@ -1,0 +1,304 @@
+.Visual {
+    margin-top: 100px;
+    color: white;
+}
+
+.container {
+    display: flex;
+    gap: 80px;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main {
+    margin-top: 40px;
+    display: flex;
+    gap: 80px;
+}
+
+.left {
+    width: 50%;
+}
+
+.left_img {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 638 / 401;
+    border-radius: 50px;
+    margin-top: 60px;
+}
+
+.right {
+    width: 40%;
+}
+
+.text_wrapper {
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+.text_box {
+    display: flex;
+    flex-direction: column;
+    animation: scrollUp 40s linear infinite;
+}
+
+.text_box {
+    display: flex;
+    flex-direction: column;
+    animation: scrollUp 40s linear infinite;
+    animation-play-state: running;
+    /* default state */
+}
+
+.text_wrapper:hover .text_box {
+    animation-play-state: paused;
+    /* pause on hover */
+}
+
+.modal {
+    max-width: 1400px;
+    width: 90%;
+    max-height: 90vh;
+    background-color: #121212;
+    position: fixed;
+    top: 50%;
+    left: -50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    padding: 40px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    transition: 1s all ease;
+}
+
+.modal.open {
+    left: 50%;
+}
+
+.modal_main {
+    display: flex;
+    gap: 40px;
+    position: relative;
+}
+
+.modal::-webkit-scrollbar {
+    display: none;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: -20;
+    opacity: 0;
+}
+
+.backdrop.open {
+    display: block;
+    z-index: 9999;
+    opacity: 1;
+}
+
+.about_img {
+    width: 456px;
+    height: 470px;
+    aspect-ratio: 1200 / 1599;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.content .sm_head {
+    font-size: 16px;
+    font-weight: 400;
+    color: #dddddd;
+}
+
+.content .hm {
+    font-size: 50px;
+    text-transform: uppercase;
+    font-weight: 900;
+    color: #d10909;
+    margin-top: 10px;
+}
+
+.tx {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #dddddd;
+    line-height: 25px;
+}
+
+.crossIcon {
+    position: absolute;
+    top: -10px;
+    right: 0;
+}
+
+@keyframes scrollUp {
+    0% {
+        transform: translateY(0%);
+    }
+
+    100% {
+        transform: translateY(-50%);
+    }
+}
+
+.text_box::-webkit-scrollbar {
+    display: none;
+}
+
+.text_parent {
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.text_parent {
+    padding: 10px 0;
+}
+
+.text {
+    font-size: 16px;
+}
+
+.text {
+    font-size: 16px;
+    color: #dddddd;
+    opacity: 0;
+    transition: 0.5 all ease;
+}
+
+.text.active {
+    opacity: 1;
+}
+.hm {
+    font-size: 29px;
+}
+
+.btn_red {
+    background-color: #b90808;
+    text-decoration: none;
+    color: white;
+    padding: 15px 20px;
+    font-size: 16px;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+}
+
+.hm_two {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 24px;
+}
+
+.line {
+    width: 100px;
+    height: 1px;
+    background-color: #dddddd;
+}
+
+.read_more {
+    font-size: 15px;
+    font-weight: 600;
+    width: max-content;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.5s all ease;
+}
+
+.read_more:hover {
+    color: #d50c0c;
+}
+
+@media screen and (max-width: 1200px) {
+    .about_img {
+        width: 356px;
+    }
+
+    .content {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .main {
+        flex-direction: column;
+        margin-top: 0px;
+        gap: 60px;
+    }
+
+    .left {
+        width: 70%;
+    }
+
+    .right {
+        width: 100%;
+    }
+
+    .modal_main {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about_img {
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .top {
+        flex-direction: column;
+        align-items: start;
+        gap: 30px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .main {
+        gap: 40px;
+    }
+
+    .about_img {
+        width: 100%;
+        height: auto;
+    }
+
+    .modal {
+        padding: 20px;
+        padding-top: 70px;
+    }
+
+    .content .hm {
+        font-size: 40px;
+    }
+
+    .crossIcon {
+        top: -55px;
+    }
+
+    .left {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .content .hm {
+        font-size: 30px;
+    }
+}
