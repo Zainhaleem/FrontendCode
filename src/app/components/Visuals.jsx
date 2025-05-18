@@ -40,13 +40,13 @@ const Visuals = () => {
         <div className={style.left}>
           <div className={style.left_img}>
             <Image
-  src={`/images/logo.png`}
+  src={`/images/vision_img1.png`}
   priority
-  alt="logo"
+  alt="Image"
   fill
   style={{ objectFit: "contain" }}
   quality={100}
-  sizes="(max-width: 400px) 70vw, 400px"
+  sizes="(max-width: 638px) 100vw, 638px"
 />
 {/*           <Image
         src="/images/visionImage.jfif"
