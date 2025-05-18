@@ -40,7 +40,7 @@ const Visuals = () => {
         <div className={style.left}>
           <div className={style.left_img}>
           <Image
-        src="/images/vision_img1.png"
+        src="/images/vision_img1.jfif"
         alt="Your product"
         fill
         priority
