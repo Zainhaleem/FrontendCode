@@ -39,7 +39,7 @@ const Visuals = () => {
       <div className={`${style.main} container`}>
         <div className={style.left}>
           <div className={style.left_img}>
-          <Image
+{/*           <Image
         src="/images/vision_img1.jfif"
         alt="Your product"
         fill
@@ -47,7 +47,7 @@ const Visuals = () => {
         style={{ objectFit: 'contain' }}
           sizes="(max-width: 638px) 100vw, 638px"
         quality={100}      
-      />
+      /> */}
           </div>
         </div>
         <div className={`${style.right}`}>
