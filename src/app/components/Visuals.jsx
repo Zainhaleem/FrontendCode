@@ -39,6 +39,15 @@ const Visuals = () => {
       <div className={`${style.main} container`}>
         <div className={style.left}>
           <div className={style.left_img}>
+            <Image
+  src={`/images/logo.png`}
+  priority
+  alt="logo"
+  fill
+  style={{ objectFit: "contain" }}
+  quality={100}
+  sizes="(max-width: 400px) 70vw, 400px"
+/>
 {/*           <Image
         src="/images/visionImage.jfif"
         alt="Vision Image"
