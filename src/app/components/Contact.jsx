@@ -70,7 +70,7 @@ const Contact = () => {
         <div className={styles.content}>
          <span className={`${f_one.className} ${styles.big_text}`}>Contact Us</span>
          <span className={`${f_one.className} ${styles.text}`}>+92 334 3966787</span>
-<a href="tel:+9230000000" className={`${f_one.className} ${styles.visit_btn}`}>
+<a href="tel:+923343966787" className={`${f_one.className} ${styles.visit_btn}`}>
   CALL NOW
 </a>
         </div>
