@@ -177,6 +177,13 @@ const Portfolio = () => {
           </div>
         )}
         <div className={`${styles.btns} ${styles.all_btns_res}`}>
+           <button
+          className={`${styles.see_tempo} ${f_one.className}`}
+          onClick={() => setPage(prev => prev + 1)}
+          disabled={loadingMore}
+        >
+          {loadingMore ? "Loading…" : "SEE MORE"}
+        </button>
           {
             Catdata
             ?.filter((btn) => btn.category !== "TVC")
@@ -199,13 +206,7 @@ const Portfolio = () => {
           }
 
         </div>
-        <button
-          className={`${styles.see_tempo} ${f_one.className}`}
-          onClick={() => setPage(prev => prev + 1)}
-          disabled={loadingMore}
-        >
-          {loadingMore ? "Loading…" : "SEE MORE"}
-        </button>
+       
       </div>
     </div>
   )
