@@ -19,9 +19,6 @@ const Footer = () => {
                               quality={100}
                             />
      </div>
-     <h2 className={`${style.hm} ${f_one.className}`}>
-     SIGN UP FOR ALL THE LATEST <br /> NEWS AND OFFERS
-     </h2>
      <div className={style.contact}>
         <h2 className={`${style.hs} ${f_one.className}`}>Contact Us</h2>
         <span className={`${style.hss} ${f_one.className}`}>info@zainhaleem.com</span>
