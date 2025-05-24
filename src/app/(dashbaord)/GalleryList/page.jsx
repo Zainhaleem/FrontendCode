@@ -8,15 +8,30 @@ import Loading from '@/app/components/Loading'
 import TrashIcon from '@/app/svg/TrashIcon'
 
 const page = () => {
-  const [data, setData] = useState()
-  const [loading, setLoading] = useState(true)
-  const fetchData = async () => {
+   const [data, setData] = useState([])
+  const [open, setOpen] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setloading] = useState(true)
+  const [imgLoadStates, setImgLoadStates] = useState({});
+
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [skip, setSkip] = useState(0);
+  const limit = 8;
+  const fetchData = async (reset = false) => {
+    if (reset) {
+      setloading(true);
+  } else {
+      setIsLoadingMore(true);
+  }
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/gallery`);
-      setData(response?.data?.galleryImages);
-      setLoading(false)
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/gallery?limit=${limit}&skip=${reset ? 0 : skip}`);
+      setData((prev) => reset ? response?.data?.galleryImages : [...prev, ...response?.data?.galleryImages]);
+      setSkip((prev) => reset ? limit : prev + limit);
     } catch (error) {
       console.error("Error fetching orders:", error);
+    }finally{
+      setloading(false)
+      setIsLoadingMore(false)
     }
   }
 
@@ -79,7 +94,8 @@ const page = () => {
         }
       </div>
       )}
-
+      <button className={`btn see btn_gr ${f_two.className}`}  onClick={() => fetchData()}
+        disabled={isLoadingMore}> {isLoadingMore ? "Loading..." : "Show More"}</button>
     </div>
   )
 }
