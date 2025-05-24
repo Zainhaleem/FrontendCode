@@ -63,7 +63,7 @@ const Contact = () => {
         <div className={styles.content}>
          <span className={`${f_one.className} ${styles.big_text}`}>Our Website</span>
          <span className={`${f_one.className} ${styles.text}`}>www.zainhaleem.com</span>
-         <span className={`${f_one.className} ${styles.visit_btn}`}>VISIT NOW</span>
+         <a href="#" className={`${f_one.className} ${styles.visit_btn}`}>VISIT NOW</a>
         </div>
       </div>
       <div className={styles.card}>
