@@ -69,6 +69,16 @@
 .sub_active_btn{
     display: none;
 }
+.noData_box{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+.noData{
+    font-size: 30px;
+    color: #d50c0c;
+}
 /* Videos */
 .videos{
     display: grid;
