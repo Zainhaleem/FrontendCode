@@ -72,6 +72,7 @@ body {
     height: max-content;
     border: 1px solid gainsboro;
     max-width: 600px;
+    margin-bottom: 20px;
 }
 
 .box.form {
