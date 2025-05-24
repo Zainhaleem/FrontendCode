@@ -5,7 +5,7 @@ import { f_one, f_two } from '@/utils/fonts'
 import axios from 'axios'
 import Loading from './Loading'
 import ArrowdownIcon from '../svg/ArrowdownIcon'
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 const Portfolio = () => {
   const [activeButton, setActiveButton] = useState('TVC'); // default active
   const [dp, setDropdown] = useState(false)
@@ -15,7 +15,9 @@ const Portfolio = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(0);
   const [Catdata, setCatData] = useState([])
+  const [scrollIntoView, setscrollIntoView] = useState(false)
   const limit = 6;
+    const bottomRef = useRef(null);
   const handelToggeling = () => {
     setActiveButton("TVC")
     setDropdown((prev) => !prev)
@@ -24,7 +26,6 @@ const Portfolio = () => {
     setActiveButton("TVC")
     setResDp((prev) => !prev)
   }
-  const bottomRef = useRef(null);
   useEffect(() => {
     const fetchData = async () => {
       // decide which loader to flip
@@ -56,10 +57,10 @@ const Portfolio = () => {
   useEffect(() => {
     setPage(0);
     setData([]);
-     if (bottomRef.current) {
+     if (scrollIntoView == true && bottomRef.current) {
             bottomRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-  }, [activeButton]);
+  }, [activeButton,]);
   useEffect(() => {
     const fetchCategory = async () => {
       try {
@@ -92,7 +93,7 @@ const Portfolio = () => {
                   if (activeButton !== curElem?.category) {
                     setActiveButton(curElem?.category);
                   } else {
-                    setActiveButton(null); 
+                    setActiveButton("TVC"); 
                   }
                   if (curElem?.category === "TVC") {
                     setDropdown(prev => !prev); 
@@ -112,7 +113,8 @@ const Portfolio = () => {
             ))
           }
         </div>
-        <div className={`${styles.res_tab} ${styles.btns}`}>
+        <div ref={bottomRef} />
+        <div  className={`${styles.res_tab} ${styles.btns}`}>
           <button className={`${styles.btn} btn ${f_one.className} ${activeButton == "TVC" ? styles.active : ""}`} onClick={() => { handelToggelingres() }}>
             TVC
             <span className={`${styles.arrow} ${dp ? styles.open : ""}`}>
@@ -128,7 +130,7 @@ const Portfolio = () => {
                   setActiveButton(subCat.point); 
                   setResDp((prev) => !prev)
                 } else {
-                  setActiveButton(null); 
+                  setActiveButton('TVC'); 
                 }
               }}>
               {subCat?.point}
@@ -137,58 +139,57 @@ const Portfolio = () => {
           }
         </div>
         {activeButton && activeButton !== "TVC" && (
-  <div className={`${styles.btn_activated} btn ${styles.btns}`}>
-    <button className={`${styles.btn} btn ${f_one.className} ${styles.active}`}>
+  <div  className={`${styles.btn_activated} btn ${styles.btns}`}>
+    <button onClick={()=>setActiveButton("TVC")} className={`${styles.btn} btn ${f_one.className} ${styles.active}`}>
       {activeButton}
     </button>
   </div>
 )}
-        {initialLoading ? (
-          <div className={styles.load}>
-            <Loading />
-          </div>
-        ) : (
-          <div className={styles.videos}>
-            {data.map((curElem, i) => {
-              const videoUrl = curElem?.video;
+     <div>
+  {initialLoading ? (
+    <div className={styles.load}>
+      <Loading />
+    </div>
+  ) : data.length === 0 ? (
+    <div className={styles.noData_box}>
+      <span className={`${f_one.className} ${styles.noData}`}>Currently No Video</span>
+    </div>
+  ) : (
+    <div className={styles.videos}>
+      {data.map((curElem, i) => {
+        const videoUrl = curElem?.video;
 
-              let embedUrl = "";
-              if (videoUrl.includes("youtu.be")) {
-                embedUrl = videoUrl.replace("youtu.be/", "www.youtube.com/embed/").split("?")[0];
-              } else if (videoUrl.includes("youtube.com/watch?v=")) {
-                const videoId = new URL(videoUrl).searchParams.get("v");
-                embedUrl = `https://www.youtube.com/embed/${videoId}`;
-              } else if (videoUrl.includes("vimeo.com")) {
-                embedUrl = videoUrl.includes("player.vimeo.com")
-                  ? videoUrl
-                  : videoUrl.replace("vimeo.com/", "player.vimeo.com/video/");
-              }
+        let embedUrl = "";
+        if (videoUrl.includes("youtu.be")) {
+          embedUrl = videoUrl.replace("youtu.be/", "www.youtube.com/embed/").split("?")[0];
+        } else if (videoUrl.includes("youtube.com/watch?v=")) {
+          const videoId = new URL(videoUrl).searchParams.get("v");
+          embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        } else if (videoUrl.includes("vimeo.com")) {
+          embedUrl = videoUrl.includes("player.vimeo.com")
+            ? videoUrl
+            : videoUrl.replace("vimeo.com/", "player.vimeo.com/video/");
+        }
 
-              return (
-                <div className={styles.video_box} key={i}>
-                  <iframe
-                    width="100%"
-                    height="250px"
-                    src={embedUrl}
-                    title={`Video ${i}`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write;   encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              );
-            })}
-<div ref={bottomRef} />
+        return (
+          <div className={styles.video_box} key={i}>
+            <iframe
+              width="100%"
+              height="250px"
+              src={embedUrl}
+              title={`Video ${i}`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
-        )}
+        );
+      })}
+    </div>
+  )}
+</div>
+
         <div className={`${styles.btns} ${styles.all_btns_res}`}>
-           <button
-          className={`${styles.see_tempo} ${f_one.className}`}
-          onClick={() => setPage(prev => prev + 1)}
-          disabled={loadingMore}
-        >
-          {loadingMore ? "Loading…" : "SEE MORE"}
-        </button>
           {
             Catdata
             ?.filter((btn) => btn.category !== "TVC")
@@ -198,7 +199,8 @@ const Portfolio = () => {
                   key={i}
                   onClick={() => {
                     if (activeButton !== curElem?.category) {
-                      setActiveButton(curElem?.category);  // Set to curElem?.category if it's different
+                      setActiveButton(curElem?.category);
+                      setscrollIntoView(true)
                     } else {
                       setActiveButton("TVC");  // Remove the active state if it's the same
                     }
@@ -211,7 +213,13 @@ const Portfolio = () => {
           }
 
         </div>
-       
+        <button
+          className={`${styles.see_tempo} ${f_one.className}`}
+          onClick={() => setPage(prev => prev + 1)}
+          disabled={loadingMore}
+        >
+          {loadingMore ? "Loading…" : "SEE MORE"}
+        </button>
       </div>
     </div>
   )
