@@ -5,6 +5,7 @@ import { f_one, f_two } from '@/utils/fonts'
 import axios from 'axios'
 import Loading from './Loading'
 import ArrowdownIcon from '../svg/ArrowdownIcon'
+import { useRef, useEffect } from 'react';
 const Portfolio = () => {
   const [activeButton, setActiveButton] = useState('TVC'); // default active
   const [dp, setDropdown] = useState(false)
@@ -23,6 +24,7 @@ const Portfolio = () => {
     setActiveButton("TVC")
     setResDp((prev) => !prev)
   }
+  const bottomRef = useRef(null);
   useEffect(() => {
     const fetchData = async () => {
       // decide which loader to flip
@@ -54,6 +56,9 @@ const Portfolio = () => {
   useEffect(() => {
     setPage(0);
     setData([]);
+     if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
   }, [activeButton]);
   useEffect(() => {
     const fetchCategory = async () => {
@@ -173,7 +178,7 @@ const Portfolio = () => {
                 </div>
               );
             })}
-
+<div ref={bottomRef} />
           </div>
         )}
         <div className={`${styles.btns} ${styles.all_btns_res}`}>
