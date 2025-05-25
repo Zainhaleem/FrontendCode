@@ -15,8 +15,8 @@ const Contact = () => {
      const notify = () => toast("✅ Message Sended Successfully");
      const notifyError = () => toast("❌ There was a problem. Please contact us at +92 334 3966787.");
      emailjs
-     .sendForm('service_yvbujox', 'template_p1p5qrl', form.current, {
-       publicKey: 'k8eKAVoB-fpxKqbeS',
+     .sendForm('service_vef16rl', 'template_fw9eqww', form.current, {
+       publicKey: 'DP1ld3tUG8jz2_fr0',
      })
       .then(
         () => {
