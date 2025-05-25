@@ -45,7 +45,7 @@ const page = () => {
     const notifyError = () => toast("❌ There was a problem. Please contact us at +92 334 3966787.");
     const notify = () => toast("✅ Applied for Appoinment Successfully");
     emailjs
-      .sendForm('service_vef16rl', 'template_fw9eqww', form.current, {
+      .sendForm('service_vef16rl', 'template_yce5yyn', form.current, {
         publicKey: 'DP1ld3tUG8jz2_fr0',
       })
       .then(
