@@ -64,7 +64,7 @@ const Gallery = () => {
                       onLoadingComplete={() => {
                         setImgLoadStates((prev) => ({ ...prev, [index]: true }));
                       }}
-                      style={{ objectFit: "contain" }}
+                      style={{ objectFit: "cover" }}
                       quality={100}
                       unoptimized
                       sizes="(max-width: 600px) 100vw, 600px"
