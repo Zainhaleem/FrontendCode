@@ -62,13 +62,6 @@
 .hide_btn{
     display: none;
 }
-.active{
-    color: white;
-        background-color: #d50c0c;
-}
-.sub_active_btn{
-    display: none;
-}
 .noData_box{
     display: flex;
     justify-content: center;
@@ -78,6 +71,13 @@
 .noData{
     font-size: 30px;
     color: #d50c0c;
+}
+.active{
+    color: white;
+        background-color: #d50c0c;
+}
+.sub_active_btn{
+    display: none;
 }
 /* Videos */
 .videos{
@@ -96,6 +96,7 @@
     padding-top: 56.25%;
     background-color: black;
     overflow: hidden;
+    height: max-content;
 }
 .video_box iframe {
     position: absolute;
@@ -119,8 +120,7 @@
     cursor: pointer;
     border-radius: 50px;
     margin: 0 auto;
-    margin-top: 20px;
-    margin-bottm: 20px;
+    margin-bottom: 20px;
     border: 0px;
 }
 .see_tempo:hover{
@@ -145,6 +145,12 @@
 }
 .arrow.open{
     transform: rotate(180deg);
+}
+.img_box{
+    position: relative;
+    aspect-ratio: 600 / 600;
+    height: max-content;
+    cursor: pointer;
 }
 @media screen and (max-width: 1024px) {
     .videos{
