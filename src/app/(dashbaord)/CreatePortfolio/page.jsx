@@ -3,21 +3,43 @@ import PlusSvg from '@/app/svg/PlusSvg'
 import { f_one, f_two } from '@/utils/fonts'
 import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
-
+import Image from 'next/image';
 const page = () => {
   const [video, setVideo] = useState("");
   const [category, setCategory] = useState("");
+  const [image, setImage] = useState("");
+  const [imagesPrev, setImagesPrev] = useState(undefined)
   const [loading, setLoading] = useState(false);
   const [OpenSubCat, setOpenSubCat] = useState(undefined)
   const [Catdata, setCatData] = useState([])
   const [error, setError] = useState({ video: "", category: "" });
+  const handleImageUpload = (e) => {
+    const files = e.target.files;
+    const validImageTypes = ["image/jpeg", "image/png", "image/webp"];
+
+    Array.from(files).forEach((file) => {
+      if (!validImageTypes.includes(file.type)) {
+        alert("Please select a valid image file (JPEG, PNG, WebP)");
+        return;
+      }
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagesPrev(reader.result); // Store base64 preview URL
+      };
+      reader.readAsDataURL(file);
+    });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const notify = () => toast("✅ Portfolio Uploaded Successfully");
     setLoading(true);
 
     let newErrors = {};
-    if (!video) newErrors.video = "Video is required";
+    if (!video && image === "") {
+      newErrors.video = "Video is required";
+    }
+
     if (!category.trim()) newErrors.category = "Category is required";
 
     if (Object.keys(newErrors).length > 0) {
@@ -30,6 +52,7 @@ const page = () => {
 
     const formData = new FormData();
     formData.append("video", video);
+    formData.append("image", image);
     formData.append("category", category);
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/portfolio`, {
@@ -112,7 +135,34 @@ const page = () => {
             onChange={(e) => setVideo(e.target.value)}
           />
         </div>
-
+        <div className="label_box">
+          <span className={`${f_two.className}`}>Select Image </span>
+          <input
+            type="file"
+            id="img_sc"
+            accept="image/*"
+            multiple
+            onChange={handleImageUpload}
+            required
+            className='ds_none'
+          />
+          <label htmlFor='img_sc' className="img_picker">
+            <PlusSvg />
+          </label>
+        </div>
+        {imagesPrev && (
+          <div className="prev_images">
+            <div className="prev_image gallery">
+              <Image
+                src={imagesPrev}
+                alt="product"
+                fill
+                style={{ objectFit: "contain" }}
+                quality={100}
+              />
+            </div>
+          </div>
+        )}
         {error.video && <span className={`${f_one.className} err`}>{error.video}</span>}
 
         <input
