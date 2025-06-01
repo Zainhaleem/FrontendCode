@@ -6,6 +6,7 @@ import axios from 'axios'
 import Loading from './Loading'
 import ArrowdownIcon from '../svg/ArrowdownIcon'
 import { useRef } from 'react';
+import Image from 'next/image'
 const Portfolio = () => {
   const [activeButton, setActiveButton] = useState('TVC'); // default active
   const [dp, setDropdown] = useState(false)
@@ -16,12 +17,9 @@ const Portfolio = () => {
   const [page, setPage] = useState(0);
   const [Catdata, setCatData] = useState([])
   const [scrollIntoView, setscrollIntoView] = useState(false)
+  const [imgLoadStates, setImgLoadStates] = useState({});
   const limit = 6;
     const bottomRef = useRef(null);
-  const handelToggeling = () => {
-    setActiveButton("TVC")
-    setDropdown((prev) => !prev)
-  }
   const handelToggelingres = () =>{
     setActiveButton("TVC")
     setResDp((prev) => !prev)
@@ -79,6 +77,9 @@ const Portfolio = () => {
 
     fetchCategory();
   }, []);
+  useEffect(()=>{
+   console.log(data)
+  },[data])
   return (
     <div className={styles.Portfolio_parent}>
       <div className={`${styles.Portfolio} container`}>
@@ -156,47 +157,61 @@ const Portfolio = () => {
     </div>
   ) : (
     <div className={styles.videos}>
-      {data.map((curElem, i) => {
-        const videoUrl = curElem?.video;
+    {data.map((curElem, i) => { 
+  const videoUrl = curElem?.video;
 
-        let embedUrl = "";
-        if (videoUrl.includes("youtu.be")) {
-          embedUrl = videoUrl.replace("youtu.be/", "www.youtube.com/embed/").split("?")[0];
-        } else if (videoUrl.includes("youtube.com/watch?v=")) {
-          const videoId = new URL(videoUrl).searchParams.get("v");
-          embedUrl = `https://www.youtube.com/embed/${videoId}`;
-        } else if (videoUrl.includes("vimeo.com")) {
-          embedUrl = videoUrl.includes("player.vimeo.com")
-            ? videoUrl
-            : videoUrl.replace("vimeo.com/", "player.vimeo.com/video/");
-        }
+  let embedUrl = "";
+  if (videoUrl.includes("youtu.be")) {
+    embedUrl = videoUrl.replace("youtu.be/", "www.youtube.com/embed/").split("?")[0];
+  } else if (videoUrl.includes("youtube.com/watch?v=")) {
+    const videoId = new URL(videoUrl).searchParams.get("v");
+    embedUrl = `https://www.youtube.com/embed/${videoId}`;
+  } else if (videoUrl.includes("vimeo.com")) {
+    embedUrl = videoUrl.includes("player.vimeo.com")
+      ? videoUrl
+      : videoUrl.replace("vimeo.com/", "player.vimeo.com/video/");
+  }
 
-        return (
-          <div className={styles.video_box} key={i}>
-            <iframe
-              width="100%"
-              height="250px"
-              src={embedUrl}
-              title={`Video ${i}`}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-        );
-      })}
+  return (
+    <React.Fragment key={curElem.id || i}>
+      {embedUrl !== "" ? (
+        <div className={styles.video_box}>
+          <iframe
+            width="100%"
+            height="250px"
+            src={embedUrl}
+            title={`Video ${i}`}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+      ) : (
+        <div className={styles.img_box}>
+          <Image
+                      src={curElem?.image?.url}
+                      alt="gallery Image"
+                      fill
+                      className={`${styles.img} ${!imgLoadStates[i] ? styles.loading : styles.loaded}`}
+                      onLoadingComplete={() => {
+                        setImgLoadStates((prev) => ({ ...prev, [i]: true }));
+                      }}
+                      style={{ objectFit: "cover" }}
+                      quality={100}
+                      unoptimized
+                      sizes="(max-width: 600px) 100vw, 600px"
+                    />
+        </div>
+      )}
+    </React.Fragment>
+  );
+})}
+
     </div>
   )}
 </div>
 
         <div className={`${styles.btns} ${styles.all_btns_res}`}>
-                  <button
-          className={`${styles.see_tempo} ${f_one.className}`}
-          onClick={() => setPage(prev => prev + 1)}
-          disabled={loadingMore}
-        >
-          {loadingMore ? "Loading…" : "SEE MORE"}
-        </button>
           {
             Catdata
             ?.filter((btn) => btn.category !== "TVC")
@@ -220,6 +235,13 @@ const Portfolio = () => {
           }
 
         </div>
+        <button
+          className={`${styles.see_tempo} ${f_one.className}`}
+          onClick={() => setPage(prev => prev + 1)}
+          disabled={loadingMore}
+        >
+          {loadingMore ? "Loading…" : "SEE MORE"}
+        </button>
       </div>
     </div>
   )
