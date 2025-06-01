@@ -152,6 +152,36 @@
     aspect-ratio: 600 / 600;
     height: max-content;
     cursor: pointer;
+        background: linear-gradient(100deg,
+            #1e1e1e 20%,
+            #2a2a2a 40%,
+            #1e1e1e 60%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 2s infinite linear;
+}
+.img {
+    transition: all 0.7s ease-in-out;
+    opacity: 0;
+}
+
+.img.loading {
+    filter: grayscale(100%) blur(16px);
+    transform: scale(1.1);
+}
+
+.img.loaded {
+    filter: grayscale(0%) blur(0);
+    transform: scale(1);
+    opacity: 1;
+}
+@keyframes skeleton-loading {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
 }
 @media screen and (max-width: 1024px) {
     .videos{
