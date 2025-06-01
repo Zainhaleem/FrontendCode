@@ -187,7 +187,7 @@ const Portfolio = () => {
           ></iframe>
         </div>
       ) : (
-        <div className={styles.img_box}>
+        <div className={`${styles.img_box} ${imgLoadStates[i] ? styles.loaded : ''}`}>
           <Image
                       src={curElem?.image?.url}
                       alt="gallery Image"
