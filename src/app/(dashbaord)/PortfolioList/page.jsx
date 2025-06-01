@@ -5,6 +5,7 @@ import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
 import Loading from '@/app/components/Loading'
 import TrashIcon from '@/app/svg/TrashIcon'
+import Image from 'next/image'
 const page = () => {
   const [data, setData] = useState()
   const [initialLoading, setInitialLoading] = useState(true);
@@ -127,7 +128,8 @@ const page = () => {
               return (
                 <div className="list_item" key={index}>
                   <div className="portfolio_video">
-                    <iframe
+                        {embedUrl !== "" ? (
+                            <iframe
                       width="100%"
                       height="100%"
                       src={embedUrl}
@@ -136,6 +138,17 @@ const page = () => {
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     ></iframe>
+                    ) : (
+                      <div className="gallery_img">
+                                    <Image
+                                      src={curElem?.image?.url}
+                                      alt="product"
+                                      fill
+                                      style={{ objectFit: "cover" }}
+                                      quality={100}
+                                    />
+                                  </div>
+                    ) }
                   </div>
                   <div className="flex col content_dash">
                     <div className="flex col gap_10">
