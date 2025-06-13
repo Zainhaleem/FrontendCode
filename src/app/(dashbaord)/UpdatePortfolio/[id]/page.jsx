@@ -18,6 +18,8 @@ const page = () => {
   const [image, setImage] = useState("");
   const [imagesPrev, setImagesPrev] = useState(undefined)
   const [imagesPrevTemp, setImagesPrevTemp] = useState("")
+   const [Catdata, setCatData] = useState([])
+     const [OpenSubCat, setOpenSubCat] = useState(undefined)
   const { id } = useParams();
   const fetchData = async () => {
     try {
@@ -94,9 +96,24 @@ const page = () => {
       reader.readAsDataURL(file);
     });
   };
-  useEffect(() => {
-    fetchData()
-  }, [])
+    useEffect(() => {
+      const fetchCategory = async () => {
+        try {
+          const url = `${process.env.NEXT_PUBLIC_API_URL}/api/category`;
+          const res = await fetch(url);
+          const data = await res.json();
+          if (res.ok) {
+            setCatData(data?.data);
+          } else {
+            alert(`Error: ${data.message}`);
+          }
+        } catch (err) {
+          console.error("Error fetching appointments:", err);
+        }
+      };
+      fetchData()
+      fetchCategory();
+    }, []);
   useEffect(() => {
     setVideo(data?.video || "");
     setCategory(data?.category || "");
@@ -115,18 +132,25 @@ const page = () => {
       />
       <h2 className={`${f_two.className} das_hm`}>Update Portfolio</h2>
       <form action="submit" className="form inputs">
-        <div className="label_box">
-          <span className={`${f_two.className}`}>Category</span>
-          <input
-            type="text"
-            className={`input ${f_two.className}`}
-            placeholder='Type Portfolio Category'
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
-          {error.category && <span className={`${f_one.className} err`}>{error.category}</span>}
+         <div className="label_box">
+               <span className={`${f_two.className}`}>Category</span>
+               <select name="category" className={`select_box ${f_two.className}`} onChange={(e) => { setCategory(e.target.value); setOpenSubCat(e.target.value) }}>
+                 <option value="Category">{category}</option>
+                 {Catdata?.map((curElem, i) => (
+                   <option value={curElem.point} key={i}>{curElem?.category}</option>
+                 ))}
+               </select>
+               {error.category && <span className={`${f_one.className} err`}>{error.category}</span>}
+             </div>
+<div className="label_box">
+          <span className={`${f_two.className}`}>Sub Category</span>
+          <select name="category" className={`select_box ${f_two.className}`} onChange={(e) => setCategory(e.target.value)}>
+            <option value="Sub Category">Sub Category</option>
+            {Catdata.find(cat => cat.category === "TVC")?.subCategories.map((subCat, i) => (
+              <option value={subCat.point} key={i}>{subCat.point}</option>
+            ))}
+          </select>
         </div>
-
         <div className="label_box">
           <span className={`${f_two.className}`}>Video Url</span>
           <input
