@@ -30,53 +30,62 @@ const page = () => {
       reader.readAsDataURL(file);
     });
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const notify = () => toast("✅ Portfolio Uploaded Successfully");
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    let newErrors = {};
-    if (!video && image === "") {
-      newErrors.video = "Video is required";
-    }
+  const notify = () => toast("✅ Portfolio Uploaded Successfully");
+  setLoading(true);
 
-    if (!category.trim()) newErrors.category = "Category is required";
+  const errors = {};
+  if (!video && !image) {
+    errors.video = "Video is required";
+  }
 
-    if (Object.keys(newErrors).length > 0) {
-      setError(newErrors);
-      setLoading(false);
-      return;
-    }
+  if (!category.trim()) {
+    errors.category = "Category is required";
+  }
 
-    setError({ video: "", category: "" });
+  if (Object.keys(errors).length > 0) {
+    setError(errors);
+    setLoading(false);
+    return;
+  }
 
+  setError({ video: "", category: "" });
+
+  try {
     const formData = new FormData();
     formData.append("video", video);
-    formData.append("image", image);
-    formData.append("category", category);
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/portfolio`, {
-        method: "POST",
-        body: formData,
-      });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        notify();
-        setLoading(false);
-        setVideo("");
-        setCategory("");
-      } else {
-        alert(`Error: ${data.message}`);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error uploading portfolio video:", error.message);
-      alert("Something went wrong!");
-      setLoading(false);
+    if (image) {
+      formData.append("image", image);
     }
-  };
+
+    formData.append("category", category);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/portfolio`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to upload portfolio");
+    }
+
+    notify();
+    setVideo("");
+    setCategory("");
+    setImage(null); 
+  } catch (error) {
+    console.error("Error uploading portfolio video:", error.message);
+    alert(error.message || "Something went wrong!");
+  } finally {
+    setLoading(false);
+  }
+};
+
   useEffect(() => {
     const fetchCategory = async () => {
       try {
@@ -123,7 +132,6 @@ const page = () => {
               <option value={subCat.point} key={i}>{subCat.point}</option>
             ))}
           </select>
-          {error.category && <span className={`${f_one.className} err`}>{error.category}</span>}
         </div>
         <div className="label_box">
           <span className={`${f_two.className}`}>Video Url</span>
@@ -134,6 +142,7 @@ const page = () => {
             value={video}
             onChange={(e) => setVideo(e.target.value)}
           />
+                  {error.video && <span className={`${f_one.className} err`}>{error.video}</span>}
         </div>
         <div className="label_box">
           <span className={`${f_two.className}`}>Select Image </span>
@@ -163,7 +172,6 @@ const page = () => {
             </div>
           </div>
         )}
-        {error.video && <span className={`${f_one.className} err`}>{error.video}</span>}
 
         <input
           disabled={loading}
