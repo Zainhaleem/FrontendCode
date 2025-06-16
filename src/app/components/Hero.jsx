@@ -8,6 +8,7 @@ import FacebookSvg from '../svg/FacebookSvg';
 import YoutubeSvg from '../svg/YoutubeSvg';
 import InstaSvg from '../svg/InstaSvg';
 import VimeoSvg from '../svg/VimeoSvg';
+import Imdb from '../svg/Imdb';
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -164,6 +165,9 @@ const Hero = () => {
         </a>
         <a href="https://vimeo.com/zainhaleem">
         <VimeoSvg />
+        </a>
+             <a href="https://www.imdb.com/name/nm9590185/">
+        <Imdb />
         </a>
       </div>
     </div>
